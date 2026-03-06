@@ -1,7 +1,8 @@
 # The AI Provenance Protocol: An Open Standard for AI-Generated Content Transparency
 
 **White Paper — Version 1.0 Draft**  
-**March 2026**
+**March 2026**  
+**Author**: Ross Williams, [merchi.ai](https://merchi.ai)
 
 ---
 

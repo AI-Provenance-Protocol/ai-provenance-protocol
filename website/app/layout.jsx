@@ -135,7 +135,11 @@ const navbar = (
 
 const footer = (
   <Footer>
-    Released under CC BY 4.0 (spec) and Apache 2.0 (code). Copyright{' '}
+    Originally created at{' '}
+    <a href="https://merchi.ai" target="_blank" rel="noopener noreferrer">
+      merchi.ai
+    </a>
+    . Released under CC BY 4.0 (spec) and Apache 2.0 (code). Copyright{' '}
     {new Date().getFullYear()} AI Provenance Protocol Contributors.
   </Footer>
 )

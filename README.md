@@ -8,6 +8,8 @@
 
 APP is a vendor-neutral, machine-readable format for recording, embedding, and verifying the provenance of AI-generated content. It answers the fundamental questions about any AI output: **who** triggered it, **what model** produced it, **what inputs** were used, and **whether a human reviewed it**.
 
+*Originally created at [merchi.ai](https://merchi.ai) and maintained by the open-source community.*
+
 **Website**: [aiprovenanceprotocol.io](https://aiprovenanceprotocol.io) · **Spec**: [v1.0 Draft](./spec/v1.0/spec.md) · **Schema**: [JSON Schema](./spec/v1.0/schema/app-metadata.schema.json)
 
 ---

@@ -828,3 +828,11 @@ MCP-related metadata can be stored in the `io.modelcontextprotocol` extension na
 | Content verification | Not covered | Verification protocol |
 | Human review tracking | Not covered | Review object |
 | EU AI Act compliance | Not directly addressed | Core design target |
+
+---
+
+## Acknowledgements
+
+The AI Provenance Protocol was originally created at [merchi.ai](https://merchi.ai), where the need for a standardised AI content provenance format emerged from building production AI content generation systems. The protocol was released as an independent open standard to benefit the broader industry.
+
+The authors thank the open-source community for their contributions and feedback.
