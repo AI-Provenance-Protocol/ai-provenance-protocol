@@ -1,0 +1,31 @@
+# Versioning
+
+The APP specification uses [Semantic Versioning](https://semver.org/) for the `app_version` field.
+
+## Version format
+
+```
+MAJOR.MINOR.PATCH
+```
+
+| Component | Meaning | Example |
+|-----------|---------|---------|
+| **Major** | Breaking changes to the schema | Fields removed or types changed |
+| **Minor** | New optional fields (backward-compatible) | New optional field added |
+| **Patch** | Editorial corrections | Typo fixes, clarifications |
+
+## Compatibility rules
+
+- Consumers MUST accept metadata with a **matching major version**, regardless of minor or patch differences
+- Consumers SHOULD warn on **unknown major versions** rather than failing silently
+- Producers MUST set `app_version` to the version of this specification they implement
+
+## Current version
+
+| Version | Status | Date |
+|---------|--------|------|
+| 1.0.0-draft | Draft | 2026-03-06 |
+
+## Version history
+
+The specification will maintain a changelog documenting all changes between versions.

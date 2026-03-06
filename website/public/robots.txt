@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://aiprovenanceprotocol.io/sitemap.xml
+
+# AI / LLM context files
+# See https://llmstxt.org for the llms.txt convention
+LLMs-Txt: https://aiprovenanceprotocol.io/llms.txt
+LLMs-Full-Txt: https://aiprovenanceprotocol.io/llms-full.txt

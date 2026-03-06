@@ -1,0 +1,80 @@
+# SDKs
+
+Official SDKs for implementing the AI Provenance Protocol in your applications.
+
+## Status
+
+SDKs are currently in development. The specification is stable enough for implementations — the SDKs will provide convenience wrappers.
+
+| SDK | Language | Package | Status |
+|-----|----------|---------|--------|
+| `@ai-provenance-protocol/sdk` | TypeScript | npm | Coming soon |
+| `ai-provenance-protocol` | Python | PyPI | Coming soon |
+
+## SDK design
+
+The SDKs will provide four core functions:
+
+### Create metadata
+
+```typescript
+import { APP } from '@ai-provenance-protocol/sdk'
+
+const metadata = APP.create({
+  generator: {
+    platform: 'my-platform',
+    model: 'anthropic/claude-sonnet-4',
+  },
+})
+```
+
+### Embed in output
+
+```typescript
+const output = APP.embed(generatedContent, metadata)
+// { ...generatedContent, _app: metadata }
+```
+
+### Extract from output
+
+```typescript
+const { content, app } = APP.extract(outputWithMetadata)
+```
+
+### Validate metadata
+
+```typescript
+const result = APP.validate(metadata)
+// { valid: true } or { valid: false, errors: [...] }
+```
+
+### Record human review
+
+```typescript
+const reviewed = APP.review(metadata, {
+  reviewer_role: 'editor',
+  review_type: 'approved_without_changes',
+})
+```
+
+### Verify remotely
+
+```typescript
+const verification = await APP.verify(
+  metadata.generation_id,
+  metadata.verification_uri
+)
+```
+
+## Implementing without an SDK
+
+You don't need an SDK to implement APP. The protocol is simple enough to implement directly:
+
+1. Generate a UUID v4 for `generation_id`
+2. Construct the metadata JSON object
+3. Embed using your chosen [embedding mode](/docs/embedding-modes)
+4. Validate against the [JSON Schema](https://aiprovenanceprotocol.io/schema/v1.0/app-metadata.schema.json)
+
+## Contributing
+
+Interested in building an SDK for another language? See the [Contributing Guide](https://github.com/AI-Provenance-Protocol/ai-provenance-protocol/blob/main/CONTRIBUTING.md).

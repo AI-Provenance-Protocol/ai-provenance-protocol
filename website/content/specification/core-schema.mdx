@@ -1,0 +1,139 @@
+# Core Schema
+
+The APP metadata object is a JSON object containing provenance information about AI-generated content.
+
+## Required fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `app_version` | `string` | Protocol version in semver format (e.g., `"1.0.0"`) |
+| `ai_generated` | `boolean` | `true` if content was generated or substantially modified by AI |
+| `generator` | `object` | Information about the generating system |
+| `generated_at` | `string` (ISO 8601) | Timestamp of generation completion (UTC recommended) |
+| `generation_id` | `string` (UUID v4) | Globally unique identifier for this generation event |
+
+## Optional fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `inputs` | `object` | Description of inputs used for generation |
+| `review` | `object` | Human review status |
+| `usage` | `object` | Token/resource usage |
+| `verification_uri` | `string` (URI) | Endpoint where this generation can be verified |
+| `parent_generation_id` | `string` (UUID) | Links to a previous generation event |
+| `content_hash` | `string` | Hash of generated content for integrity verification |
+| `extensions` | `object` | Namespace for domain-specific extensions |
+
+## Minimal example
+
+```json
+{
+  "app_version": "1.0.0",
+  "ai_generated": true,
+  "generator": {
+    "platform": "example-platform",
+    "model": "openai/gpt-4o"
+  },
+  "generated_at": "2026-03-06T14:22:00Z",
+  "generation_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+}
+```
+
+## Generator object
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `platform` | `string` | Yes | Identifier of the platform |
+| `model` | `string` | Yes | Identifier of the AI model (format: `"provider/model-name"`) |
+| `platform_version` | `string` | No | Version of the platform |
+
+## Inputs object
+
+Describes what went into the generation — types and references, not content.
+
+```json
+{
+  "inputs": {
+    "type": "structured",
+    "description": "Product images and attribute data",
+    "items": [
+      { "kind": "image", "ref": "product-photo.jpg", "hash": "sha256:abc..." },
+      { "kind": "data", "ref": "product_attributes", "fields": ["name", "category"] }
+    ],
+    "prompt_ref": "prompt-template-v2.1"
+  }
+}
+```
+
+## Review object
+
+Records human oversight — critical for EU AI Act Article 50(4) compliance.
+
+```json
+{
+  "review": {
+    "human_reviewed": true,
+    "reviewer_role": "editor",
+    "reviewed_at": "2026-03-06T15:30:00Z",
+    "review_type": "approved_without_changes"
+  }
+}
+```
+
+Review types: `"approved_without_changes"`, `"edited"`, `"rejected"`, `"pending"`.
+
+## Usage object
+
+Resource consumption tracking.
+
+```json
+{
+  "usage": {
+    "input_tokens": 1523,
+    "output_tokens": 487,
+    "total_tokens": 2010,
+    "duration_ms": 3200
+  }
+}
+```
+
+## Complete example
+
+```json
+{
+  "app_version": "1.0.0",
+  "ai_generated": true,
+  "generator": {
+    "platform": "acme-content-engine",
+    "platform_version": "2.3.1",
+    "model": "anthropic/claude-sonnet-4"
+  },
+  "generated_at": "2026-03-06T14:22:00Z",
+  "generation_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "content_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb924...",
+  "verification_uri": "https://verify.acme.com/v1/verify",
+  "inputs": {
+    "type": "structured",
+    "description": "Product images and attribute data",
+    "items": [
+      { "kind": "image", "ref": "product-photo.jpg" },
+      { "kind": "data", "ref": "product_attributes", "fields": ["name", "category"] }
+    ]
+  },
+  "review": {
+    "human_reviewed": true,
+    "reviewer_role": "editor",
+    "reviewed_at": "2026-03-06T15:30:00Z",
+    "review_type": "approved_without_changes"
+  },
+  "usage": {
+    "input_tokens": 1523,
+    "output_tokens": 487,
+    "total_tokens": 2010,
+    "duration_ms": 3200
+  },
+  "extensions": {
+    "com.acme": { "tenant_id": "t-123" }
+  }
+}
+```

@@ -1,0 +1,64 @@
+# Extensions
+
+The `extensions` object provides a namespace for domain-specific metadata not covered by the core specification.
+
+## Namespace format
+
+Extension keys MUST use reverse-domain notation:
+
+```json
+{
+  "extensions": {
+    "com.example": { "custom_field": "value" },
+    "org.c2pa": { "manifest_uri": "https://example.com/c2pa/manifest.cbor" },
+    "io.modelcontextprotocol": { "server_name": "my-server", "tool_name": "generate" }
+  }
+}
+```
+
+## Rules
+
+- Extension keys MUST be valid reverse-domain strings
+- Extensions MUST NOT redefine core schema fields
+- Consumers MUST ignore unrecognised extensions (fail-open)
+- Extensions SHOULD be documented by their namespace owners
+
+## Well-known extensions
+
+| Namespace | Owner | Purpose |
+|-----------|-------|---------|
+| `org.c2pa` | C2PA | Links to Content Credentials manifests |
+| `io.modelcontextprotocol` | MCP | Model Context Protocol integration metadata |
+| `org.schema` | Schema.org | Schema.org CreativeWork property mappings |
+
+## C2PA integration example
+
+```json
+{
+  "extensions": {
+    "org.c2pa": {
+      "manifest_uri": "https://example.com/c2pa/manifest.cbor",
+      "claim_generator": "example-platform/1.0"
+    }
+  }
+}
+```
+
+## MCP integration example
+
+```json
+{
+  "extensions": {
+    "io.modelcontextprotocol": {
+      "server_name": "product-description-server",
+      "server_version": "1.0.0",
+      "tool_name": "generate_description",
+      "session_id": "mcp-session-abc123"
+    }
+  }
+}
+```
+
+## Registering a namespace
+
+There is no formal registration process. By convention, use the reverse-domain notation of a domain you control. Document your extension schema publicly to enable interoperability.

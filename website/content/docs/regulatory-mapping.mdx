@@ -1,0 +1,49 @@
+# Regulatory Mapping
+
+APP is designed with regulation in mind. This page maps APP features to specific regulatory requirements, with a focus on the EU AI Act.
+
+## EU AI Act Article 50
+
+The EU AI Act's transparency obligations become enforceable on **2 August 2026**.
+
+### Compliance matrix
+
+| Obligation | Article | APP Feature | Coverage |
+|-----------|---------|-------------|----------|
+| Mark output as AI-generated | 50(2) | `ai_generated: true` in `_app` metadata | Full |
+| Machine-readable, detectable format | 50(2) | Three embedding modes | Full |
+| Free detection mechanism | 50(2) | Public verification endpoints | Full |
+| Publicly available interfaces | 50(2) | HTTPS verification, no auth | Full |
+| Deployer disclosure | 50(4) | `ai_generated` field for downstream use | Full |
+| Human review exemption | 50(4) | `review.human_reviewed` + timestamp | Full |
+| Non-breaking marking | 50(2) | `_app` key is ignorable; headers are non-breaking | Full |
+
+### How to achieve compliance
+
+1. **Embed APP metadata** in all AI-generated output
+2. **Expose a verification endpoint** (recommended)
+3. **Record human review** when it occurs
+4. **Use non-breaking embedding** (inline JSON or HTTP headers)
+
+## Other jurisdictions
+
+| Jurisdiction | Framework | APP Relevance |
+|-------------|-----------|---------------|
+| **US** | Executive Order 14110 | Provenance tracking aligns with EO guidance |
+| **US** | NIST AI RMF | Supports Transparency and Accountability functions |
+| **China** | Interim Measures for Generative AI | APP's `ai_generated` field satisfies labelling requirements |
+| **Canada** | AIDA (proposed) | Ready-made transparency mechanism |
+| **UK** | AI Safety Institute guidance | Concrete implementation of voluntary best practices |
+| **Global** | ISO/IEC 42001 | Provides required audit trail and documentation |
+
+## Compliance checklist
+
+- [ ] Embed APP metadata in all AI-generated output
+- [ ] Set `ai_generated: true` for all AI-generated content
+- [ ] Include accurate `generator` information
+- [ ] Record `generated_at` timestamps
+- [ ] Generate unique `generation_id` for each generation
+- [ ] Expose a public verification endpoint
+- [ ] Implement human review tracking when applicable
+- [ ] Include `content_hash` for integrity verification
+- [ ] Validate metadata against the JSON Schema

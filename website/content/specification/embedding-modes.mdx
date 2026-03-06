@@ -1,0 +1,55 @@
+# Embedding Modes (Specification)
+
+APP metadata can be associated with generated content using three modes. Producers MUST implement at least one mode. Consumers SHOULD support all three.
+
+## Mode 1: Inline embedding
+
+The `_app` key is embedded at the top level of JSON output:
+
+```json
+{
+  "title": "Example content",
+  "_app": { "app_version": "1.0.0", "ai_generated": true, "..." : "..." }
+}
+```
+
+### Rules
+- The key MUST be `_app`
+- MUST be at the top level of the JSON object
+- Systems SHOULD preserve `_app` through transformations
+- MUST be excluded when computing content hashes
+
+## Mode 2: HTTP headers
+
+`X-APP-*` response headers carry core provenance fields:
+
+| Header | Maps to | Required |
+|--------|---------|----------|
+| `X-APP-Version` | `app_version` | REQUIRED |
+| `X-APP-AI-Generated` | `ai_generated` | REQUIRED |
+| `X-APP-Generation-Id` | `generation_id` | REQUIRED |
+| `X-APP-Generator-Platform` | `generator.platform` | REQUIRED |
+| `X-APP-Generator-Model` | `generator.model` | REQUIRED |
+| `X-APP-Generated-At` | `generated_at` | REQUIRED |
+| `X-APP-Verification-URI` | `verification_uri` | OPTIONAL |
+| `X-APP-Human-Reviewed` | `review.human_reviewed` | OPTIONAL |
+| `X-APP-Content-Hash` | `content_hash` | OPTIONAL |
+| `X-APP-Parent-Generation-Id` | `parent_generation_id` | OPTIONAL |
+
+### Rules
+- Boolean values transmitted as `"true"` / `"false"` strings
+- For full metadata (inputs, extensions), combine with Mode 3
+
+## Mode 3: Linked metadata
+
+A `Link` header or HTML `<link>` element points to a full APP metadata document:
+
+```http
+Link: <https://verify.example.com/v1/metadata/a1b2c3d4-...>; rel="ai-provenance"; type="application/app+json"
+```
+
+### Rules
+- `rel` MUST be `"ai-provenance"`
+- `type` SHOULD be `"application/app+json"`
+- Linked document MUST be served over HTTPS in production
+- SHOULD be publicly accessible without authentication

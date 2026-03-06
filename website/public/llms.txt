@@ -1,0 +1,35 @@
+# AI Provenance Protocol (APP)
+
+> An open standard for recording, embedding, and verifying the provenance of AI-generated content.
+
+> Fetch the complete documentation index at: https://aiprovenanceprotocol.io/llms-full.txt
+> Use this file to discover all available pages before exploring further.
+
+## Documentation
+
+- [Introduction](https://aiprovenanceprotocol.io/docs): What is the AI Provenance Protocol?
+- [Getting Started](https://aiprovenanceprotocol.io/docs/getting-started): Quick start guide for implementors
+- [Embedding Modes](https://aiprovenanceprotocol.io/docs/embedding-modes): Inline, HTTP header, and linked metadata modes
+- [Verification Protocol](https://aiprovenanceprotocol.io/docs/verification-protocol): How third-party verification works
+- [MCP Integration](https://aiprovenanceprotocol.io/docs/mcp-integration): Using APP with the Model Context Protocol
+- [Regulatory Mapping](https://aiprovenanceprotocol.io/docs/regulatory-mapping): EU AI Act compliance matrix
+- [SDKs](https://aiprovenanceprotocol.io/docs/sdk): Official SDKs for TypeScript and Python
+
+## Specification
+
+- [Specification Overview](https://aiprovenanceprotocol.io/specification): APP v1.0 specification
+- [Core Schema](https://aiprovenanceprotocol.io/specification/core-schema): Required and optional metadata fields
+- [Embedding Modes](https://aiprovenanceprotocol.io/specification/embedding-modes): Inline, HTTP headers, linked metadata
+- [Verification Protocol](https://aiprovenanceprotocol.io/specification/verification-protocol): Level 1 and Level 2 verification
+- [Content Hashing](https://aiprovenanceprotocol.io/specification/content-hashing): SHA-256 canonicalization
+- [Extensions](https://aiprovenanceprotocol.io/specification/extensions): Namespaced domain-specific metadata
+- [Security Considerations](https://aiprovenanceprotocol.io/specification/security): Integrity, spoofing, privacy
+- [JSON Schema Reference](https://aiprovenanceprotocol.io/specification/json-schema): Machine-validatable schema
+- [Versioning](https://aiprovenanceprotocol.io/specification/versioning): Semver policy
+
+## Community
+
+- [Community Overview](https://aiprovenanceprotocol.io/community): How to get involved
+- [Contributing](https://aiprovenanceprotocol.io/community/contributing): Contribution guidelines
+- [Governance](https://aiprovenanceprotocol.io/community/governance): Governance model
+- [Roadmap](https://aiprovenanceprotocol.io/community/roadmap): Development roadmap

@@ -1,0 +1,131 @@
+# Embedding Modes
+
+APP metadata can be associated with AI-generated content using three modes. This page provides detailed guidance on choosing and implementing each one.
+
+## Choosing a mode
+
+| Mode | Best for | Limitations |
+|------|----------|-------------|
+| **Inline** | JSON APIs, structured data | Only works with JSON output |
+| **HTTP Headers** | REST APIs, HTML responses | Cannot carry full metadata (inputs, extensions) |
+| **Linked** | Any content type (PDF, images, HTML) | Requires hosting a metadata endpoint |
+
+You can combine modes — for example, HTTP headers for quick detection and linked metadata for full details.
+
+---
+
+## Mode 1: Inline embedding
+
+Embed the `_app` key directly in JSON output.
+
+```json
+{
+  "title": "Premium Leather Wallet",
+  "description": "Handcrafted from full-grain leather...",
+  "_app": {
+    "app_version": "1.0.0",
+    "ai_generated": true,
+    "generator": {
+      "platform": "example-platform",
+      "model": "anthropic/claude-sonnet-4"
+    },
+    "generated_at": "2026-03-06T14:22:00Z",
+    "generation_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "verification_uri": "https://verify.example.com/v1/verify"
+  }
+}
+```
+
+### Rules
+
+- The key **must** be `_app` at the top level of the JSON object
+- The underscore prefix signals "this is metadata, not content"
+- Systems that don't understand APP should ignore the `_app` key
+- When computing content hashes, exclude the `_app` key
+
+### When to use
+
+- Your API returns JSON responses
+- Downstream systems can process the `_app` key
+- You want metadata to travel with content through JSON pipelines
+
+---
+
+## Mode 2: HTTP headers
+
+Transmit APP metadata as HTTP response headers.
+
+```http
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+X-APP-Version: 1.0.0
+X-APP-AI-Generated: true
+X-APP-Generation-Id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+X-APP-Generator-Platform: example-platform
+X-APP-Generator-Model: anthropic/claude-sonnet-4
+X-APP-Generated-At: 2026-03-06T14:22:00Z
+X-APP-Verification-URI: https://verify.example.com/v1/verify
+X-APP-Human-Reviewed: false
+```
+
+### Header reference
+
+| Header | Required | Maps to |
+|--------|----------|---------|
+| `X-APP-Version` | Yes | `app_version` |
+| `X-APP-AI-Generated` | Yes | `ai_generated` |
+| `X-APP-Generation-Id` | Yes | `generation_id` |
+| `X-APP-Generator-Platform` | Yes | `generator.platform` |
+| `X-APP-Generator-Model` | Yes | `generator.model` |
+| `X-APP-Generated-At` | Yes | `generated_at` |
+| `X-APP-Verification-URI` | No | `verification_uri` |
+| `X-APP-Human-Reviewed` | No | `review.human_reviewed` |
+| `X-APP-Content-Hash` | No | `content_hash` |
+
+### When to use
+
+- Your API returns non-JSON content (HTML, plain text, XML)
+- You want lightweight detection without modifying the response body
+- You're adding APP to existing APIs with minimal changes
+
+---
+
+## Mode 3: Linked metadata
+
+Point to a hosted APP metadata document.
+
+### HTTP Link header
+
+```http
+Link: <https://verify.example.com/v1/metadata/a1b2c3d4-...>; rel="ai-provenance"; type="application/app+json"
+```
+
+### HTML link element
+
+```html
+<link rel="ai-provenance"
+      href="https://verify.example.com/v1/metadata/a1b2c3d4-..."
+      type="application/app+json" />
+```
+
+### When to use
+
+- Content is not JSON (PDFs, images, HTML pages)
+- You need full metadata including inputs and extensions
+- You want to update metadata after delivery
+
+---
+
+## Combining modes
+
+A common production pattern uses headers for detection and linked metadata for full details:
+
+```http
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+X-APP-AI-Generated: true
+X-APP-Generation-Id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+Link: <https://verify.example.com/v1/metadata/a1b2c3d4-...>; rel="ai-provenance"; type="application/app+json"
+```
+
+Lightweight consumers detect AI-generated content via headers. Advanced consumers follow the link for full provenance details.

@@ -1,0 +1,75 @@
+# JSON Schema Reference
+
+The APP metadata schema is published as a JSON Schema (Draft 2020-12) document for automated validation.
+
+## Schema location
+
+- **URL**: `https://aiprovenanceprotocol.io/schema/v1.0/app-metadata.schema.json`
+- **Repository**: [`spec/v1.0/schema/app-metadata.schema.json`](https://github.com/AI-Provenance-Protocol/ai-provenance-protocol/blob/main/spec/v1.0/schema/app-metadata.schema.json)
+
+## Validation
+
+Use any JSON Schema validator to check APP metadata conformance:
+
+### Node.js (using Ajv)
+
+```typescript
+import Ajv from 'ajv'
+import addFormats from 'ajv-formats'
+import schema from './app-metadata.schema.json'
+
+const ajv = new Ajv()
+addFormats(ajv)
+const validate = ajv.compile(schema)
+
+const metadata = {
+  app_version: '1.0.0',
+  ai_generated: true,
+  generator: { platform: 'example', model: 'openai/gpt-4o' },
+  generated_at: '2026-03-06T14:22:00Z',
+  generation_id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+}
+
+if (validate(metadata)) {
+  console.log('Valid APP metadata')
+} else {
+  console.error('Validation errors:', validate.errors)
+}
+```
+
+### Python (using jsonschema)
+
+```python
+import json
+from jsonschema import validate, ValidationError
+
+with open('app-metadata.schema.json') as f:
+    schema = json.load(f)
+
+metadata = {
+    "app_version": "1.0.0",
+    "ai_generated": True,
+    "generator": {"platform": "example", "model": "openai/gpt-4o"},
+    "generated_at": "2026-03-06T14:22:00Z",
+    "generation_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+}
+
+try:
+    validate(instance=metadata, schema=schema)
+    print("Valid APP metadata")
+except ValidationError as e:
+    print(f"Validation error: {e.message}")
+```
+
+## Schema structure
+
+The schema defines the following object types:
+
+| Definition | Description |
+|-----------|-------------|
+| Root object | The APP metadata object with required and optional fields |
+| `Generator` | Platform and model information |
+| `Inputs` | Description of generation inputs |
+| `InputItem` | A single input source |
+| `Review` | Human review status |
+| `Usage` | Resource consumption |

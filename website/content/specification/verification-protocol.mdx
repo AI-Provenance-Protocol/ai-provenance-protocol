@@ -1,0 +1,67 @@
+# Verification Protocol (Specification)
+
+The verification protocol allows third parties to confirm provenance claims. Platforms implementing APP SHOULD expose a verification endpoint.
+
+## Level 1: Generation ID lookup
+
+```
+GET {verification_uri}/{generation_id}
+```
+
+### Success response
+
+```json
+{
+  "found": true,
+  "app_version": "1.0.0",
+  "ai_generated": true,
+  "generator": { "platform": "example", "model": "anthropic/claude-sonnet-4" },
+  "generated_at": "2026-03-06T14:22:00Z",
+  "review": { "human_reviewed": false }
+}
+```
+
+### Not found response
+
+```json
+{ "found": false }
+```
+
+### Requirements
+- MUST NOT require authentication
+- MUST NOT return generated content
+- SHOULD return `200 OK` for both found and not-found (use `found` field)
+- SHOULD implement rate limiting (HTTP 429)
+
+## Level 2: Content hash verification
+
+```http
+POST {verification_uri}/match
+Content-Type: application/json
+
+{ "content_hash": "sha256:e3b0c44...", "content_type": "application/json" }
+```
+
+### Match response
+
+```json
+{
+  "matches": [{
+    "generation_id": "a1b2c3d4-...",
+    "ai_generated": true,
+    "generator": { "platform": "example", "model": "anthropic/claude-sonnet-4" },
+    "generated_at": "2026-03-06T14:22:00Z"
+  }]
+}
+```
+
+### No match response
+
+```json
+{ "matches": [] }
+```
+
+### Requirements
+- `content_hash` MUST follow `"{algorithm}:{hex-hash}"` format
+- Rate limiting is STRONGLY RECOMMENDED
+- Response MUST NOT include generated content

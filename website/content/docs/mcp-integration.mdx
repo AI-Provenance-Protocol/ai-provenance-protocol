@@ -1,0 +1,75 @@
+# MCP Integration
+
+The AI Provenance Protocol (APP) and the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) are complementary standards. MCP defines how AI applications connect to external tools and data sources; APP records the provenance of AI-generated output.
+
+## How they fit together
+
+| Concern | MCP | APP |
+|---------|-----|-----|
+| AI-to-tool connectivity | Primary purpose | Not covered |
+| Provenance of AI output | Not covered | Primary purpose |
+| Content verification | Not covered | Verification protocol |
+| Human review tracking | Not covered | Review object |
+| EU AI Act compliance | Not directly addressed | Core design target |
+
+## MCP servers that generate content
+
+If you build an MCP server that uses AI models to generate content, include APP metadata in your tool responses.
+
+### Example: Tool response with APP metadata
+
+```json
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "Generated product description..."
+    }
+  ],
+  "_app": {
+    "app_version": "1.0.0",
+    "ai_generated": true,
+    "generator": {
+      "platform": "product-description-server",
+      "model": "anthropic/claude-sonnet-4"
+    },
+    "generated_at": "2026-03-06T14:22:00Z",
+    "generation_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+  }
+}
+```
+
+### MCP extension namespace
+
+Store MCP-specific context in the `io.modelcontextprotocol` extension namespace:
+
+```json
+{
+  "extensions": {
+    "io.modelcontextprotocol": {
+      "server_name": "product-description-server",
+      "server_version": "1.0.0",
+      "tool_name": "generate_description",
+      "session_id": "mcp-session-abc123"
+    }
+  }
+}
+```
+
+## Provenance chains
+
+When MCP workflows involve multiple AI generation steps, use `parent_generation_id` to create provenance chains:
+
+```
+Step 1: "research" tool      → generation_id: "aaa-111"
+Step 2: "write_draft" tool    → generation_id: "bbb-222", parent: "aaa-111"
+Step 3: "polish" tool         → generation_id: "ccc-333", parent: "bbb-222"
+```
+
+## Best practices
+
+1. **Always include APP metadata** when your MCP server uses AI models
+2. **Use the MCP extension namespace** for MCP-specific context
+3. **Create provenance chains** when multiple tools contribute to output
+4. **Expose verification endpoints** for regulated contexts
+5. **Record human review** when MCP tool output is reviewed before use

@@ -1,0 +1,113 @@
+# Verification Protocol
+
+The APP verification protocol allows any third party to confirm provenance claims about AI-generated content without accessing the original content.
+
+## Overview
+
+| Level | Method | Purpose |
+|-------|--------|---------|
+| **Level 1** | `GET /{generation_id}` | Confirm a specific generation event occurred |
+| **Level 2** | `POST /match` | Find generation events matching a content hash |
+
+Both levels are served from the `verification_uri` specified in APP metadata.
+
+---
+
+## Level 1: Generation ID lookup
+
+### Request
+
+```
+GET {verification_uri}/{generation_id}
+```
+
+### Response: found
+
+```json
+{
+  "found": true,
+  "app_version": "1.0.0",
+  "ai_generated": true,
+  "generator": {
+    "platform": "example-platform",
+    "model": "anthropic/claude-sonnet-4"
+  },
+  "generated_at": "2026-03-06T14:22:00Z",
+  "review": {
+    "human_reviewed": true,
+    "reviewer_role": "editor",
+    "reviewed_at": "2026-03-06T15:30:00Z",
+    "review_type": "approved_without_changes"
+  }
+}
+```
+
+### Response: not found
+
+```json
+{
+  "found": false
+}
+```
+
+### Rules
+
+- No authentication required — this is a public endpoint
+- Both found and not-found return `200 OK` (the `found` field distinguishes)
+- The response **must not** include the generated content
+- Rate limiting (HTTP 429) is recommended
+
+---
+
+## Level 2: Content hash verification
+
+### Request
+
+```http
+POST {verification_uri}/match
+Content-Type: application/json
+
+{
+  "content_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb924...",
+  "content_type": "application/json"
+}
+```
+
+### Response: matches found
+
+```json
+{
+  "matches": [
+    {
+      "generation_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "ai_generated": true,
+      "generator": {
+        "platform": "example-platform",
+        "model": "anthropic/claude-sonnet-4"
+      },
+      "generated_at": "2026-03-06T14:22:00Z"
+    }
+  ]
+}
+```
+
+### Response: no matches
+
+```json
+{
+  "matches": []
+}
+```
+
+---
+
+## Security considerations
+
+- **HTTPS required** in production
+- **Rate limiting** recommended to prevent enumeration
+- **No content exposure** — verification returns provenance metadata only
+- **UUID v4 entropy** (122 bits) makes brute-force ID enumeration impractical
+
+## EU AI Act compliance
+
+The verification protocol satisfies the Article 50(2) requirement for detection mechanisms that are free of charge and available through publicly accessible interfaces.

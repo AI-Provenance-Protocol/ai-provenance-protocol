@@ -1,0 +1,42 @@
+# Security Considerations
+
+## Metadata integrity
+
+APP v1.0 metadata is not cryptographically signed. This means:
+
+- Metadata can be modified after generation
+- `content_hash` detects content tampering but not metadata tampering
+- For high-assurance use cases, wrap APP metadata in a cryptographic envelope (JWS, C2PA manifest)
+
+Future versions MAY define a native signing mechanism.
+
+## Verification endpoint security
+
+- MUST be served over HTTPS in production
+- SHOULD implement rate limiting to prevent enumeration and DoS
+- MUST NOT return generated content
+- SHOULD log access for audit purposes
+
+## Spoofing risks
+
+Without cryptographic signing:
+
+| Attack | Description | Mitigation |
+|--------|-------------|-----------|
+| False positive | Attaching APP metadata to non-AI content | Verification protocol confirms generation ID with producing platform |
+| False negative | Removing APP metadata from AI content | Content hash matching (Level 2 verification) can detect this |
+| Metadata tampering | Modifying generator, timestamp, or other fields | Verification protocol returns authoritative metadata from the source |
+
+## Enumeration
+
+UUID v4 generation IDs have 122 bits of entropy — brute-force enumeration is impractical. Verification endpoints SHOULD still implement rate limiting.
+
+## Privacy considerations
+
+The core APP schema avoids personal data:
+
+- `reviewer_role` records a functional role, not identity
+- `generation_id` is a random UUID, not linked to a user
+- `inputs` describes types, not content
+
+Platforms under GDPR SHOULD assess whether APP metadata combined with other data could identify individuals, particularly in the `extensions` namespace.

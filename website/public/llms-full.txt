@@ -1,0 +1,207 @@
+# AI Provenance Protocol (APP) — Complete Reference
+
+> An open standard for recording, embedding, and verifying the provenance of AI-generated content.
+> Version: 1.0.0-draft | License: CC BY 4.0 (spec), Apache 2.0 (code)
+> Website: https://aiprovenanceprotocol.io
+> GitHub: https://github.com/AI-Provenance-Protocol/ai-provenance-protocol
+
+## What is APP?
+
+APP defines a vendor-neutral, machine-readable format for AI content provenance. It provides:
+1. A JSON metadata schema (`_app` key) with 5 required fields
+2. Three embedding modes: inline JSON, HTTP headers, linked metadata
+3. A verification protocol for third-party provenance confirmation
+
+APP is designed to comply with the EU AI Act Article 50 (enforceable 2 August 2026).
+
+## Core Schema — Required Fields
+
+| Field            | Type              | Description                                           |
+|------------------|-------------------|-------------------------------------------------------|
+| `app_version`    | string (semver)   | Protocol version, e.g. "1.0.0"                       |
+| `ai_generated`   | boolean           | true if content was generated/modified by AI          |
+| `generator`      | object            | { platform: string, model: string }                   |
+| `generated_at`   | string (ISO 8601) | Timestamp of generation completion                    |
+| `generation_id`  | string (UUID v4)  | Globally unique identifier for this generation event  |
+
+## Core Schema — Optional Fields
+
+| Field                  | Type        | Description                                       |
+|------------------------|-------------|---------------------------------------------------|
+| `inputs`               | object      | Description of inputs used for generation         |
+| `review`               | object      | Human review status                               |
+| `usage`                | object      | Token/resource usage                              |
+| `verification_uri`     | string (URI)| Endpoint for third-party verification             |
+| `parent_generation_id` | string (UUID)| Links to previous generation in a chain          |
+| `content_hash`         | string      | SHA-256 hash for integrity verification           |
+| `extensions`           | object      | Namespaced domain-specific metadata               |
+
+## Minimal Example
+
+```json
+{
+  "app_version": "1.0.0",
+  "ai_generated": true,
+  "generator": {
+    "platform": "example-platform",
+    "model": "anthropic/claude-sonnet-4"
+  },
+  "generated_at": "2026-03-06T14:22:00Z",
+  "generation_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+}
+```
+
+## Inline Embedding Example
+
+```json
+{
+  "title": "Premium Leather Wallet",
+  "description": "Handcrafted from full-grain leather...",
+  "_app": {
+    "app_version": "1.0.0",
+    "ai_generated": true,
+    "generator": {
+      "platform": "my-platform",
+      "model": "anthropic/claude-sonnet-4"
+    },
+    "generated_at": "2026-03-06T14:22:00Z",
+    "generation_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "verification_uri": "https://verify.example.com/v1/verify",
+    "review": { "human_reviewed": false }
+  }
+}
+```
+
+## HTTP Header Embedding
+
+```
+X-APP-Version: 1.0.0
+X-APP-AI-Generated: true
+X-APP-Generation-Id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+X-APP-Generator-Platform: my-platform
+X-APP-Generator-Model: anthropic/claude-sonnet-4
+X-APP-Generated-At: 2026-03-06T14:22:00Z
+X-APP-Verification-URI: https://verify.example.com/v1/verify
+X-APP-Human-Reviewed: false
+```
+
+## Linked Metadata Embedding
+
+```
+Link: <https://verify.example.com/v1/metadata/a1b2c3d4-...>; rel="ai-provenance"; type="application/app+json"
+```
+
+## Verification Protocol
+
+Level 1 — Generation ID Lookup:
+```
+GET {verification_uri}/{generation_id}
+→ { "found": true, "ai_generated": true, "generator": {...}, "generated_at": "..." }
+→ { "found": false }
+```
+
+Level 2 — Content Hash Matching:
+```
+POST {verification_uri}/match
+Body: { "content_hash": "sha256:...", "content_type": "application/json" }
+→ { "matches": [{...}] }
+→ { "matches": [] }
+```
+
+Rules: No authentication required. Never returns content. Rate limiting recommended.
+
+## Review Object (Human Oversight)
+
+```json
+{
+  "review": {
+    "human_reviewed": true,
+    "reviewer_role": "editor",
+    "reviewed_at": "2026-03-06T15:30:00Z",
+    "review_type": "approved_without_changes"
+  }
+}
+```
+
+Review types: "approved_without_changes", "edited", "rejected", "pending".
+Reviewer role records a functional role, not PII.
+
+## Extensions
+
+Namespaced domain-specific metadata using reverse-domain notation:
+
+```json
+{
+  "extensions": {
+    "org.c2pa": { "manifest_uri": "https://example.com/c2pa/manifest.cbor" },
+    "io.modelcontextprotocol": { "server_name": "my-mcp-server", "tool_name": "generate" },
+    "com.acme": { "tenant_id": "t-123" }
+  }
+}
+```
+
+## Content Hashing
+
+Algorithm: SHA-256 (required), SHA-384 and SHA-512 (optional).
+Format: "{algorithm}:{hex-hash}", e.g. "sha256:e3b0c44298fc1c14..."
+
+For JSON: hash the canonical form (keys sorted, no whitespace, UTF-8, `_app` key excluded).
+For non-JSON: hash the raw bytes.
+
+## Relationship to Other Standards
+
+- C2PA: Complementary — C2PA covers images/video/audio, APP covers text/structured data
+- MCP: Complementary — MCP connects AI to tools, APP records provenance of AI output
+- Schema.org: Interoperable — APP coexists with CreativeWork metadata
+- W3C PROV: Compatible — APP maps to the PROV data model
+- IPTC: Complementary — APP extends provenance beyond photojournalism
+
+## EU AI Act Article 50 Compliance
+
+| Obligation                        | APP Feature                                    |
+|-----------------------------------|------------------------------------------------|
+| Machine-readable AI marking       | `ai_generated: true` in `_app` metadata        |
+| Detectable as AI-generated        | Three embedding modes                          |
+| Free detection mechanism          | Public verification endpoints, no auth         |
+| Deployer disclosure               | `ai_generated` field for downstream systems    |
+| Human review exemption            | `review.human_reviewed` with timestamp         |
+| Non-breaking marking              | `_app` key ignorable; headers non-breaking     |
+
+## JSON Schema
+
+Published at: https://aiprovenanceprotocol.io/schema/v1.0/app-metadata.schema.json
+Repository: spec/v1.0/schema/app-metadata.schema.json
+
+## MCP Integration
+
+MCP servers generating AI content should include APP metadata in tool responses.
+Use the `io.modelcontextprotocol` extension namespace for MCP-specific context.
+Use `parent_generation_id` to create provenance chains across multi-step MCP workflows.
+
+## Page Index
+
+### Documentation
+- [Introduction](https://aiprovenanceprotocol.io/docs): What is APP?
+- [Getting Started](https://aiprovenanceprotocol.io/docs/getting-started): Implementation guide
+- [Embedding Modes](https://aiprovenanceprotocol.io/docs/embedding-modes): Inline, headers, linked
+- [Verification Protocol](https://aiprovenanceprotocol.io/docs/verification-protocol): Third-party verification
+- [MCP Integration](https://aiprovenanceprotocol.io/docs/mcp-integration): Model Context Protocol
+- [Regulatory Mapping](https://aiprovenanceprotocol.io/docs/regulatory-mapping): EU AI Act compliance
+- [SDKs](https://aiprovenanceprotocol.io/docs/sdk): TypeScript and Python SDKs
+
+### Specification
+- [Overview](https://aiprovenanceprotocol.io/specification): Spec v1.0 overview
+- [Core Schema](https://aiprovenanceprotocol.io/specification/core-schema): Schema fields
+- [Embedding Modes](https://aiprovenanceprotocol.io/specification/embedding-modes): Formal spec
+- [Verification Protocol](https://aiprovenanceprotocol.io/specification/verification-protocol): Formal spec
+- [Content Hashing](https://aiprovenanceprotocol.io/specification/content-hashing): Hash algorithms
+- [Extensions](https://aiprovenanceprotocol.io/specification/extensions): Extension namespaces
+- [Security](https://aiprovenanceprotocol.io/specification/security): Security considerations
+- [JSON Schema](https://aiprovenanceprotocol.io/specification/json-schema): Schema reference
+- [Versioning](https://aiprovenanceprotocol.io/specification/versioning): Version policy
+
+### Community
+- [Overview](https://aiprovenanceprotocol.io/community): Get involved
+- [Contributing](https://aiprovenanceprotocol.io/community/contributing): How to contribute
+- [Governance](https://aiprovenanceprotocol.io/community/governance): Governance model
+- [Roadmap](https://aiprovenanceprotocol.io/community/roadmap): Development roadmap

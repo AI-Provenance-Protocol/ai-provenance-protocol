@@ -1,0 +1,42 @@
+# Specification
+
+**AI Provenance Protocol — Specification v1.0 (Draft)**
+
+| | |
+|---|---|
+| **Status** | Draft |
+| **Version** | 1.0.0-draft |
+| **Date** | 2026-03-06 |
+| **License** | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+| **Full document** | [spec.md on GitHub](https://github.com/AI-Provenance-Protocol/ai-provenance-protocol/blob/main/spec/v1.0/spec.md) |
+
+## Abstract
+
+The AI Provenance Protocol (APP) defines an open, vendor-neutral format for recording, embedding, and verifying the provenance of AI-generated content. This specification describes the metadata schema, embedding modes, verification protocol, and conformance requirements.
+
+## Terminology
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in the specification are interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
+
+## Conformance levels
+
+| Level | Role | Requirements |
+|-------|------|-------------|
+| **Level 1: Producer** | Generates APP metadata | Must create valid metadata with all required fields, using at least one embedding mode |
+| **Level 2: Consumer** | Reads APP metadata | Must parse all three embedding modes and validate the `app_version` field |
+| **Level 3: Verifier** | Hosts verification endpoints | Must implement Level 1 verification, should implement Level 2, must use HTTPS |
+
+## Specification sections
+
+- [Core Schema](/specification/core-schema) — required and optional fields
+- [Embedding Modes](/specification/embedding-modes) — inline, HTTP headers, and linked metadata
+- [Verification Protocol](/specification/verification-protocol) — Level 1 and Level 2 verification
+- [Content Hashing](/specification/content-hashing) — SHA-256 canonicalization and integrity
+- [Extensions](/specification/extensions) — namespaced domain-specific metadata
+- [Security Considerations](/specification/security) — integrity, spoofing, and privacy
+- [JSON Schema Reference](/specification/json-schema) — machine-validatable schema
+- [Versioning](/specification/versioning) — semver policy and compatibility rules
+
+## Full specification
+
+The complete specification is available as a single document: [spec/v1.0/spec.md on GitHub](https://github.com/AI-Provenance-Protocol/ai-provenance-protocol/blob/main/spec/v1.0/spec.md).

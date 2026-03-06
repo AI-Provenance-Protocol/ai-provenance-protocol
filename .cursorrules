@@ -1,0 +1,86 @@
+# AI Provenance Protocol (APP) — Cursor Rules
+
+## Project Overview
+
+This repository contains the **AI Provenance Protocol (APP)**, an open standard for recording, embedding, and verifying the provenance of AI-generated content. APP provides a vendor-neutral, machine-readable format for answering: *who* triggered AI generation, *what model* produced it, *what inputs* were used, and *whether a human reviewed it*.
+
+APP is designed to comply with the EU AI Act Article 50 transparency obligations (enforceable 2 August 2026) and to serve as a foundation for AI governance worldwide.
+
+## Repository Structure
+
+```
+ai-provenance-protocol/
+├── spec/                    # Protocol specification (Markdown + JSON Schema)
+│   └── v1.0/               # Version 1.0 of the specification
+│       ├── spec.md          # Full specification document
+│       └── schema/          # JSON Schema files
+├── docs/                    # Documentation and guides
+├── white-paper/             # White paper and formal publications
+├── website/                 # Documentation website (Next.js / Nextra, deployed on Vercel)
+├── examples/                # Example implementations and usage
+├── CONTRIBUTING.md          # Contribution guidelines
+├── CODE_OF_CONDUCT.md       # Community code of conduct
+├── SECURITY.md              # Security policy
+├── LICENSE                  # Apache 2.0
+└── README.md                # Project overview
+```
+
+## Key Conventions
+
+### Specification Documents
+- The canonical spec lives in `spec/v1.0/spec.md` using RFC-style language (MUST, SHOULD, MAY per RFC 2119)
+- JSON Schema files use JSON Schema Draft 2020-12
+- Field names in the protocol use `snake_case`
+- The metadata key embedded in JSON output is `_app` (underscore prefix = metadata convention)
+- Version numbering follows Semantic Versioning (semver)
+
+### Code Style
+- TypeScript/JavaScript: ESLint + Prettier, strict TypeScript
+- Python: Black + Ruff, type hints required
+- All code examples in docs must be valid and runnable
+- Package names use `@ai-provenance-protocol/` npm scope
+
+### Documentation
+- Use clear, accessible language — this is a standard meant for broad adoption
+- Always include practical code examples alongside abstract descriptions
+- Reference EU AI Act articles by number (e.g., "Article 50(2)")
+- When referencing other standards, use full names on first mention (e.g., "Coalition for Content Provenance and Authenticity (C2PA)")
+
+### Website (Nextra / Next.js)
+- Website source lives in `website/`
+- Uses Nextra documentation theme for Next.js
+- Deployed on Vercel at aiprovenanceprotocol.io
+- MDX files for content pages
+- Follow the information architecture patterns of modelcontextprotocol.io
+
+### MCP Integration
+- APP is designed to complement the Model Context Protocol (MCP), not compete with it
+- MCP handles AI-to-tool connectivity; APP handles provenance of AI-generated output
+- MCP servers can embed APP metadata in their tool responses
+- The `extensions` namespace in APP supports MCP-specific metadata under `io.modelcontextprotocol`
+
+### Licensing
+- Specification: CC BY 4.0 (Creative Commons Attribution)
+- SDKs and tools: Apache 2.0
+- Website content: CC BY 4.0
+
+### Git Conventions
+- Branch naming: `feat/`, `fix/`, `docs/`, `spec/` prefixes
+- Commit messages: conventional commits format (feat:, fix:, docs:, spec:, chore:)
+- PRs require description of changes and impact on the specification
+- Tag releases with `v` prefix (e.g., `v1.0.0`)
+
+## Core Protocol Concepts
+
+The APP metadata object (`_app`) contains:
+- **Required**: `app_version`, `ai_generated`, `generator`, `generated_at`, `generation_id`
+- **Optional**: `inputs`, `review`, `usage`, `verification_uri`, `parent_generation_id`, `content_hash`, `extensions`
+
+Three embedding modes:
+1. **Inline** — `_app` key in JSON output
+2. **HTTP Headers** — `X-APP-*` headers
+3. **Linked Metadata** — `Link` header with `rel="ai-provenance"`
+
+Verification protocol:
+- Level 1: `GET {verification_uri}/{generation_id}` — lookup
+- Level 2: `POST {verification_uri}/match` — content hash matching

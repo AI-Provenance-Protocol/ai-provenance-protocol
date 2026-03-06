@@ -1,0 +1,86 @@
+# AI Provenance Protocol (APP)
+
+**The open standard for AI-generated content provenance.**
+
+APP is a vendor-neutral, machine-readable format for recording, embedding, and verifying the provenance of AI-generated content. It answers the fundamental questions about any AI output: **who** triggered it, **what model** produced it, **what inputs** were used, and **whether a human reviewed it**.
+
+[Get Started](/docs) | [Read the Specification](/specification) | [GitHub](https://github.com/AI-Provenance-Protocol/ai-provenance-protocol)
+
+---
+
+## Why APP?
+
+AI-generated content is everywhere — product descriptions, legal documents, marketing copy, code, medical summaries. Yet there is no standard way to communicate its provenance.
+
+The **EU AI Act Article 50** (enforceable 2 August 2026) requires AI providers to mark output in a machine-readable format and offer free detection mechanisms. APP satisfies these obligations by design.
+
+### What APP provides
+
+| | |
+|---|---|
+| **Metadata schema** | A JSON object (`_app`) with five required fields — simple enough to implement in minutes |
+| **Embedding modes** | Inline JSON, HTTP headers, or linked metadata — works with any content type |
+| **Verification protocol** | Public REST endpoints for third-party provenance confirmation |
+| **Human review tracking** | Record who reviewed AI output and when — critical for EU AI Act exemptions |
+| **Extension system** | Domain-specific metadata via namespaced extensions (C2PA, MCP, and more) |
+
+---
+
+## Quick example
+
+```json
+{
+  "title": "Premium Leather Wallet",
+  "description": "Handcrafted from full-grain leather...",
+  "_app": {
+    "app_version": "1.0.0",
+    "ai_generated": true,
+    "generator": {
+      "platform": "my-platform",
+      "model": "anthropic/claude-sonnet-4"
+    },
+    "generated_at": "2026-03-06T14:22:00Z",
+    "generation_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "verification_uri": "https://verify.my-platform.com/v1/verify",
+    "review": {
+      "human_reviewed": false
+    }
+  }
+}
+```
+
+Any system receiving this JSON instantly knows the content was AI-generated, which model produced it, and where to verify the claim.
+
+---
+
+## Designed for the ecosystem
+
+APP complements existing standards — it doesn't replace them.
+
+| Standard | Relationship |
+|----------|-------------|
+| **C2PA / Content Credentials** | C2PA handles images, video, and audio. APP handles text and structured data. |
+| **Model Context Protocol (MCP)** | MCP connects AI to tools. APP records what the AI produced. |
+| **Schema.org** | APP metadata coexists with Schema.org properties. |
+| **W3C PROV** | APP maps to the W3C PROV data model. |
+
+---
+
+## EU AI Act ready
+
+| Requirement | APP Feature |
+|-------------|-------------|
+| Machine-readable AI marking | `ai_generated: true` in `_app` metadata |
+| Detectable as AI-generated | Three embedding modes |
+| Free detection mechanism | Public verification endpoints |
+| Human review exemption | `review.human_reviewed` with audit trail |
+| Non-breaking marking | Metadata is ignorable by non-APP systems |
+
+---
+
+## Open and free
+
+- **Specification**: CC BY 4.0
+- **SDKs and tools**: Apache 2.0
+- **No proprietary claims**: Implement APP without permission or fees
+- **Community governed**: Open development on GitHub
