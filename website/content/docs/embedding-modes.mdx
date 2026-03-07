@@ -16,13 +16,13 @@ You can combine modes — for example, HTTP headers for quick detection and link
 
 ## Mode 1: Inline embedding
 
-Embed the `_app` key directly in JSON output.
+Embed the `_ai_provenance` key directly in JSON output.
 
 ```json
 {
   "title": "Premium Leather Wallet",
   "description": "Handcrafted from full-grain leather...",
-  "_app": {
+  "_ai_provenance": {
     "app_version": "1.0.0",
     "ai_generated": true,
     "generator": {
@@ -38,15 +38,15 @@ Embed the `_app` key directly in JSON output.
 
 ### Rules
 
-- The key **must** be `_app` at the top level of the JSON object
+- The key **must** be `_ai_provenance` at the top level of the JSON object
 - The underscore prefix signals "this is metadata, not content"
-- Systems that don't understand APP should ignore the `_app` key
-- When computing content hashes, exclude the `_app` key
+- Systems that don't understand APP should ignore the `_ai_provenance` key
+- When computing content hashes, exclude the `_ai_provenance` key
 
 ### When to use
 
 - Your API returns JSON responses
-- Downstream systems can process the `_app` key
+- Downstream systems can process the `_ai_provenance` key
 - You want metadata to travel with content through JSON pipelines
 
 ---

@@ -10,13 +10,13 @@ The EU AI Act's transparency obligations become enforceable on **2 August 2026**
 
 | Obligation | Article | APP Feature | Coverage |
 |-----------|---------|-------------|----------|
-| Mark output as AI-generated | 50(2) | `ai_generated: true` in `_app` metadata | Full |
+| Mark output as AI-generated | 50(2) | `ai_generated: true` in `_ai_provenance` metadata | Full |
 | Machine-readable, detectable format | 50(2) | Three embedding modes | Full |
 | Free detection mechanism | 50(2) | Public verification endpoints | Full |
 | Publicly available interfaces | 50(2) | HTTPS verification, no auth | Full |
 | Deployer disclosure | 50(4) | `ai_generated` field for downstream use | Full |
 | Human review exemption | 50(4) | `review.human_reviewed` + timestamp | Full |
-| Non-breaking marking | 50(2) | `_app` key is ignorable; headers are non-breaking | Full |
+| Non-breaking marking | 50(2) | `_ai_provenance` key is ignorable; headers are non-breaking | Full |
 
 ### How to achieve compliance
 

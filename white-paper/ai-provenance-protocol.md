@@ -88,13 +88,13 @@ APP is designed to be:
 
 ### 2.3 The APP Metadata Object
 
-At its core, APP is a JSON object — the `_app` key — embedded in or linked to AI-generated content:
+At its core, APP is a JSON object — the `_ai_provenance` key — embedded in or linked to AI-generated content:
 
 ```json
 {
   "title": "Premium Leather Wallet",
   "description": "Handcrafted from full-grain leather...",
-  "_app": {
+  "_ai_provenance": {
     "app_version": "1.0.0",
     "ai_generated": true,
     "generator": {
@@ -145,7 +145,7 @@ Optional fields support richer provenance recording:
 
 APP metadata can reach consumers through three channels:
 
-**Mode 1: Inline Embedding** — The `_app` key is embedded directly in JSON output. This is the simplest mode and ensures metadata travels with the content through JSON pipelines.
+**Mode 1: Inline Embedding** — The `_ai_provenance` key is embedded directly in JSON output. This is the simplest mode and ensures metadata travels with the content through JSON pipelines.
 
 **Mode 2: HTTP Headers** — `X-APP-*` response headers carry core provenance fields. This works for any HTTP response (HTML, plain text, XML) without modifying the response body.
 
@@ -165,7 +165,7 @@ Both levels are public, unauthenticated, and return only provenance metadata —
 
 ### 3.4 Content Hashing
 
-APP specifies SHA-256 as the default hashing algorithm. For JSON content, the hash is computed over the canonical representation: keys sorted lexicographically, no whitespace, UTF-8 encoded, with the `_app` key excluded.
+APP specifies SHA-256 as the default hashing algorithm. For JSON content, the hash is computed over the canonical representation: keys sorted lexicographically, no whitespace, UTF-8 encoded, with the `_ai_provenance` key excluded.
 
 This enables integrity verification — a third party can hash the content they received and compare it to the `content_hash` in the metadata to detect tampering.
 
@@ -195,13 +195,13 @@ APP was designed with the EU AI Act's transparency obligations as a primary targ
 
 | Obligation | Article | APP Feature |
 |-----------|---------|-------------|
-| Mark output as AI-generated in machine-readable format | 50(2) | `ai_generated: true` in `_app` metadata |
+| Mark output as AI-generated in machine-readable format | 50(2) | `ai_generated: true` in `_ai_provenance` metadata |
 | Output detectable as artificially generated | 50(2) | Three embedding modes ensure metadata is discoverable |
 | Detection mechanisms free of charge | 50(2) | Verification protocol — public, no auth required |
 | Publicly available interfaces | 50(2) | Open HTTPS verification endpoints |
 | Deployer disclosure obligation | 50(4) | `ai_generated` field available for downstream systems |
 | Human review exemption | 50(4) | `review.human_reviewed` with timestamp and reviewer role |
-| Marking shall not affect functionality | 50(2) | `_app` key is ignorable; headers are non-breaking |
+| Marking shall not affect functionality | 50(2) | `_ai_provenance` key is ignorable; headers are non-breaking |
 
 Organisations implementing APP for all their AI-generated output will satisfy the technical requirements of Article 50 by design.
 
@@ -281,7 +281,7 @@ APP is designed for low adoption friction:
 
 | Integration | Effort | Description |
 |------------|--------|-------------|
-| Minimal | Hours | Add `_app` JSON key to AI-generated output |
+| Minimal | Hours | Add `_ai_provenance` JSON key to AI-generated output |
 | Standard | Days | Add HTTP headers + JSON embedding + human review tracking |
 | Full | 1-2 weeks | All embedding modes + verification endpoint + content hashing |
 

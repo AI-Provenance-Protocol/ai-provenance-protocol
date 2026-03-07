@@ -14,11 +14,11 @@ The EU AI Act Article 50 is the primary regulatory driver for APP. Its obligatio
 
 | Requirement | APP Feature | Implementation |
 |-------------|------------|----------------|
-| Machine-readable marking | `_app` metadata object | Inline JSON, HTTP headers, or linked metadata |
+| Machine-readable marking | `_ai_provenance` metadata object | Inline JSON, HTTP headers, or linked metadata |
 | Detectable as AI-generated | `ai_generated: true` | Explicit boolean field |
 | Detection mechanism free of charge | Verification protocol | Public endpoints, no auth required |
 | Publicly available interface | `verification_uri` | HTTPS endpoint, no registration needed |
-| Shall not affect functionality | `_app` key / `X-APP-*` headers | Non-breaking; consumers can ignore |
+| Shall not affect functionality | `_ai_provenance` key / `X-APP-*` headers | Non-breaking; consumers can ignore |
 
 #### Article 50(4) — Deployer Obligations
 
@@ -88,7 +88,7 @@ The EU Code of Practice on AI-generated content marking (expected June 2026) wil
 
 For organisations implementing APP to achieve EU AI Act compliance:
 
-- [ ] Embed APP metadata (`_app` object or `X-APP-*` headers) in all AI-generated output
+- [ ] Embed APP metadata (`_ai_provenance` object or `X-APP-*` headers) in all AI-generated output
 - [ ] Ensure `ai_generated` is set to `true` for all AI-generated content
 - [ ] Include accurate `generator` information (platform and model)
 - [ ] Record `generated_at` timestamps for all generation events

@@ -25,7 +25,7 @@ Meanwhile, the **EU AI Act Article 50** — enforceable 2 August 2026 — requir
 | | |
 |---|---|
 | **What it covers** | Text, structured data, code, and any content representable as JSON or transmitted via HTTP |
-| **How it works** | A JSON metadata object (`_app`) embedded in output, transmitted as HTTP headers, or linked via URI |
+| **How it works** | A JSON metadata object (`_ai_provenance`) embedded in output, transmitted as HTTP headers, or linked via URI |
 | **Verification** | Public REST endpoints for third-party provenance confirmation |
 | **Compliance** | Maps directly to EU AI Act Article 50(2) and 50(4) obligations |
 | **Relationship to C2PA** | Complementary — C2PA handles images/video/audio, APP handles text and structured data |
@@ -39,7 +39,7 @@ Meanwhile, the **EU AI Act Article 50** — enforceable 2 August 2026 — requir
 {
   "title": "Premium Leather Wallet",
   "description": "Handcrafted from full-grain leather...",
-  "_app": {
+  "_ai_provenance": {
     "app_version": "1.0.0",
     "ai_generated": true,
     "generator": {
@@ -80,7 +80,7 @@ Any system receiving this JSON can instantly determine that the content was AI-g
 APP metadata can be delivered in three ways:
 
 ### 1. Inline Embedding (JSON output)
-Embed the `_app` key directly in JSON responses.
+Embed the `_ai_provenance` key directly in JSON responses.
 
 ### 2. HTTP Headers (API responses)
 ```http

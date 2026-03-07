@@ -60,7 +60,7 @@ server.tool(
           type: 'text',
           text: JSON.stringify({
             description: generatedText,
-            _app: {
+            _ai_provenance: {
               app_version: '1.0.0',
               ai_generated: true,
               generator: {
@@ -93,7 +93,7 @@ Store MCP-specific context in the `io.modelcontextprotocol` extension namespace:
 
 ```json
 {
-  "_app": {
+  "_ai_provenance": {
     "app_version": "1.0.0",
     "ai_generated": true,
     "generator": {
@@ -126,13 +126,13 @@ function processToolResponse(response: ToolResponse) {
     if (content.type === 'text') {
       try {
         const parsed = JSON.parse(content.text);
-        if (parsed._app) {
+        if (parsed._ai_provenance) {
           // APP metadata found — record provenance
-          storeProvenance(parsed._app);
+          storeProvenance(parsed._ai_provenance);
 
-          if (parsed._app.ai_generated && !parsed._app.review?.human_reviewed) {
+          if (parsed._ai_provenance.ai_generated && !parsed._ai_provenance.review?.human_reviewed) {
             // Flag for human review if required by policy
-            flagForReview(parsed._app.generation_id);
+            flagForReview(parsed._ai_provenance.generation_id);
           }
         }
       } catch {

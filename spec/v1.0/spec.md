@@ -410,13 +410,13 @@ APP metadata can be associated with generated content using three modes. Produce
 
 ### 10.1 Mode 1: Inline Embedding
 
-For JSON or structured data output, the APP metadata object is embedded under the `_app` key at the top level of the output:
+For JSON or structured data output, the APP metadata object is embedded under the `_ai_provenance` key at the top level of the output:
 
 ```json
 {
   "title": "Premium Leather Wallet",
   "description": "Handcrafted from full-grain leather...",
-  "_app": {
+  "_ai_provenance": {
     "app_version": "1.0.0",
     "ai_generated": true,
     "generator": {
@@ -430,11 +430,11 @@ For JSON or structured data output, the APP metadata object is embedded under th
 ```
 
 #### Rules
-- The key MUST be `_app` (underscore prefix indicates metadata)
-- The `_app` key MUST be at the top level of the JSON object
-- Systems processing the JSON output SHOULD preserve the `_app` key through transformations
-- Systems that do not understand APP SHOULD ignore the `_app` key
-- When computing content hashes, the `_app` key MUST be excluded (see Section 12)
+- The key MUST be `_ai_provenance` (underscore prefix indicates metadata)
+- The `_ai_provenance` key MUST be at the top level of the JSON object
+- Systems processing the JSON output SHOULD preserve the `_ai_provenance` key through transformations
+- Systems that do not understand APP SHOULD ignore the `_ai_provenance` key
+- When computing content hashes, the `_ai_provenance` key MUST be excluded (see Section 12)
 
 ### 10.2 Mode 2: HTTP Headers
 
@@ -627,7 +627,7 @@ Implementations MUST support `sha256`. Other algorithms MAY be supported.
 
 For JSON content, the hash MUST be computed over the **canonical** representation:
 
-1. Remove the `_app` key from the JSON object (if present)
+1. Remove the `_ai_provenance` key from the JSON object (if present)
 2. Sort all object keys recursively in lexicographic order
 3. Remove all insignificant whitespace
 4. Encode as UTF-8
@@ -763,13 +763,13 @@ The complete JSON Schema for APP metadata is published at:
 
 | Obligation | Article | APP Feature | Coverage |
 |-----------|---------|-------------|----------|
-| Mark output as AI-generated in machine-readable format | 50(2) | `ai_generated: true` + full `_app` metadata | Full |
+| Mark output as AI-generated in machine-readable format | 50(2) | `ai_generated: true` + full `_ai_provenance` metadata | Full |
 | Output must be detectable as artificially generated | 50(2) | Inline embedding, HTTP headers, or linked metadata | Full |
 | Offer detection mechanisms free of charge | 50(2) | Verification protocol (Level 1 + Level 2), no auth required | Full |
 | Detection via publicly available interfaces | 50(2) | Open verification endpoint | Full |
 | Deployer disclosure of AI-generated content | 50(4) | `ai_generated` field available for downstream systems | Full |
 | Human review exemption | 50(4) | `review.human_reviewed` + `review.reviewed_at` | Full |
-| Marking shall not affect functionality | 50(2) | `_app` key is ignorable; headers are non-breaking | Full |
+| Marking shall not affect functionality | 50(2) | `_ai_provenance` key is ignorable; headers are non-breaking | Full |
 
 ---
 
@@ -789,7 +789,7 @@ MCP servers that generate content using AI models can include APP metadata in th
       "text": "Generated product description..."
     }
   ],
-  "_app": {
+  "_ai_provenance": {
     "app_version": "1.0.0",
     "ai_generated": true,
     "generator": {

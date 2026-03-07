@@ -18,7 +18,7 @@ The **EU AI Act Article 50** (enforceable 2 August 2026) requires AI providers t
 
 | | |
 |---|---|
-| **Metadata schema** | A JSON object (`_app`) with five required fields — simple enough to implement in minutes |
+| **Metadata schema** | A JSON object (`_ai_provenance`) with five required fields — simple enough to implement in minutes |
 | **Embedding modes** | Inline JSON, HTTP headers, or linked metadata — works with any content type |
 | **Verification protocol** | Public REST endpoints for third-party provenance confirmation |
 | **Human review tracking** | Record who reviewed AI output and when — critical for EU AI Act exemptions |
@@ -32,7 +32,7 @@ The **EU AI Act Article 50** (enforceable 2 August 2026) requires AI providers t
 {
   "title": "Premium Leather Wallet",
   "description": "Handcrafted from full-grain leather...",
-  "_app": {
+  "_ai_provenance": {
     "app_version": "1.0.0",
     "ai_generated": true,
     "generator": {
@@ -70,7 +70,7 @@ APP complements existing standards — it doesn't replace them.
 
 | Requirement | APP Feature |
 |-------------|-------------|
-| Machine-readable AI marking | `ai_generated: true` in `_app` metadata |
+| Machine-readable AI marking | `ai_generated: true` in `_ai_provenance` metadata |
 | Detectable as AI-generated | Three embedding modes |
 | Free detection mechanism | Public verification endpoints |
 | Human review exemption | `review.human_reviewed` with audit trail |

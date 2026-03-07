@@ -24,7 +24,7 @@ Implementations MUST support `sha256`.
 
 For JSON content, the hash MUST be computed over the canonical representation:
 
-1. Remove the `_app` key (if present)
+1. Remove the `_ai_provenance` key (if present)
 2. Sort all object keys recursively in lexicographic order
 3. Remove all insignificant whitespace
 4. Encode as UTF-8

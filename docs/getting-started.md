@@ -33,13 +33,13 @@ Key requirements:
 
 ### Option A: Inline Embedding (for JSON APIs)
 
-Add the metadata as an `_app` key in your JSON response:
+Add the metadata as an `_ai_provenance` key in your JSON response:
 
 ```json
 {
   "product_title": "Premium Leather Wallet",
   "product_description": "Handcrafted from full-grain leather...",
-  "_app": {
+  "_ai_provenance": {
     "app_version": "1.0.0",
     "ai_generated": true,
     "generator": {
@@ -102,7 +102,7 @@ For integrity verification, compute a SHA-256 hash of the generated content:
 }
 ```
 
-For JSON content, hash the canonical representation (keys sorted, no whitespace, UTF-8, excluding the `_app` key).
+For JSON content, hash the canonical representation (keys sorted, no whitespace, UTF-8, excluding the `_ai_provenance` key).
 
 ## Step 5: Implement Verification (Recommended)
 

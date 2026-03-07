@@ -8,7 +8,7 @@
 ## What is APP?
 
 APP defines a vendor-neutral, machine-readable format for AI content provenance. It provides:
-1. A JSON metadata schema (`_app` key) with 5 required fields
+1. A JSON metadata schema (`_ai_provenance` key) with 5 required fields
 2. Three embedding modes: inline JSON, HTTP headers, linked metadata
 3. A verification protocol for third-party provenance confirmation
 
@@ -57,7 +57,7 @@ APP is designed to comply with the EU AI Act Article 50 (enforceable 2 August 20
 {
   "title": "Premium Leather Wallet",
   "description": "Handcrafted from full-grain leather...",
-  "_app": {
+  "_ai_provenance": {
     "app_version": "1.0.0",
     "ai_generated": true,
     "generator": {
@@ -145,7 +145,7 @@ Namespaced domain-specific metadata using reverse-domain notation:
 Algorithm: SHA-256 (required), SHA-384 and SHA-512 (optional).
 Format: "{algorithm}:{hex-hash}", e.g. "sha256:e3b0c44298fc1c14..."
 
-For JSON: hash the canonical form (keys sorted, no whitespace, UTF-8, `_app` key excluded).
+For JSON: hash the canonical form (keys sorted, no whitespace, UTF-8, `_ai_provenance` key excluded).
 For non-JSON: hash the raw bytes.
 
 ## Relationship to Other Standards
@@ -160,12 +160,12 @@ For non-JSON: hash the raw bytes.
 
 | Obligation                        | APP Feature                                    |
 |-----------------------------------|------------------------------------------------|
-| Machine-readable AI marking       | `ai_generated: true` in `_app` metadata        |
+| Machine-readable AI marking       | `ai_generated: true` in `_ai_provenance` metadata        |
 | Detectable as AI-generated        | Three embedding modes                          |
 | Free detection mechanism          | Public verification endpoints, no auth         |
 | Deployer disclosure               | `ai_generated` field for downstream systems    |
 | Human review exemption            | `review.human_reviewed` with timestamp         |
-| Non-breaking marking              | `_app` key ignorable; headers non-breaking     |
+| Non-breaking marking              | `_ai_provenance` key ignorable; headers non-breaking     |
 
 ## JSON Schema
 

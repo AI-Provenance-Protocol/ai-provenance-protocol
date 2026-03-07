@@ -31,7 +31,7 @@ ai-provenance-protocol/
 - The canonical spec lives in `spec/v1.0/spec.md` using RFC-style language (MUST, SHOULD, MAY per RFC 2119)
 - JSON Schema files use JSON Schema Draft 2020-12
 - Field names in the protocol use `snake_case`
-- The metadata key embedded in JSON output is `_app` (underscore prefix = metadata convention)
+- The metadata key embedded in JSON output is `_ai_provenance` (underscore prefix = metadata convention)
 - Version numbering follows Semantic Versioning (semver)
 
 ### Code Style
@@ -72,12 +72,12 @@ ai-provenance-protocol/
 
 ## Core Protocol Concepts
 
-The APP metadata object (`_app`) contains:
+The APP metadata object (`_ai_provenance`) contains:
 - **Required**: `app_version`, `ai_generated`, `generator`, `generated_at`, `generation_id`
 - **Optional**: `inputs`, `review`, `usage`, `verification_uri`, `parent_generation_id`, `content_hash`, `extensions`
 
 Three embedding modes:
-1. **Inline** — `_app` key in JSON output
+1. **Inline** — `_ai_provenance` key in JSON output
 2. **HTTP Headers** — `X-APP-*` headers
 3. **Linked Metadata** — `Link` header with `rel="ai-provenance"`
 

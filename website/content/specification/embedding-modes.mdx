@@ -4,19 +4,19 @@ APP metadata can be associated with generated content using three modes. Produce
 
 ## Mode 1: Inline embedding
 
-The `_app` key is embedded at the top level of JSON output:
+The `_ai_provenance` key is embedded at the top level of JSON output:
 
 ```json
 {
   "title": "Example content",
-  "_app": { "app_version": "1.0.0", "ai_generated": true, "..." : "..." }
+  "_ai_provenance": { "app_version": "1.0.0", "ai_generated": true, "..." : "..." }
 }
 ```
 
 ### Rules
-- The key MUST be `_app`
+- The key MUST be `_ai_provenance`
 - MUST be at the top level of the JSON object
-- Systems SHOULD preserve `_app` through transformations
+- Systems SHOULD preserve `_ai_provenance` through transformations
 - MUST be excluded when computing content hashes
 
 ## Mode 2: HTTP headers

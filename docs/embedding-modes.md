@@ -16,7 +16,7 @@ You can combine modes. For example, use HTTP headers for quick detection and lin
 
 ## Mode 1: Inline Embedding
 
-Embed the `_app` key directly in JSON output.
+Embed the `_ai_provenance` key directly in JSON output.
 
 ### Implementation
 
@@ -24,7 +24,7 @@ Embed the `_app` key directly in JSON output.
 {
   "title": "Premium Leather Wallet",
   "description": "Handcrafted from full-grain leather...",
-  "_app": {
+  "_ai_provenance": {
     "app_version": "1.0.0",
     "ai_generated": true,
     "generator": {
@@ -43,24 +43,24 @@ Embed the `_app` key directly in JSON output.
 
 ### Rules
 
-- The key MUST be `_app` at the top level of the JSON object
+- The key MUST be `_ai_provenance` at the top level of the JSON object
 - The underscore prefix signals "this is metadata, not content"
-- Systems that don't understand APP should ignore the `_app` key
-- When computing content hashes, exclude the `_app` key
+- Systems that don't understand APP should ignore the `_ai_provenance` key
+- When computing content hashes, exclude the `_ai_provenance` key
 
 ### When to Use
 
 - Your API returns JSON responses
-- Downstream systems can receive and process the `_app` key
+- Downstream systems can receive and process the `_ai_provenance` key
 - You want the metadata to travel with the content through JSON pipelines
 
 ### Extracting Metadata
 
 ```typescript
 function extractAppMetadata(content: unknown): { data: unknown; app: AppMetadata | null } {
-  if (typeof content === 'object' && content !== null && '_app' in content) {
-    const { _app, ...data } = content as Record<string, unknown>;
-    return { data, app: _app as AppMetadata };
+  if (typeof content === 'object' && content !== null && '_ai_provenance' in content) {
+    const { _ai_provenance, ...data } = content as Record<string, unknown>;
+    return { data, app: _ai_provenance as AppMetadata };
   }
   return { data: content, app: null };
 }
