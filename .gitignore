@@ -35,6 +35,7 @@ venv/
 !.vscode/settings.json
 !.vscode/extensions.json
 .idea/
+.cursor/
 *.swp
 *.swo
 *~
@@ -72,6 +73,3 @@ pnpm-debug.log*
 tmp/
 temp/
 *.tmp
-
-# Cursor IDE configuration files
-.cursor/
