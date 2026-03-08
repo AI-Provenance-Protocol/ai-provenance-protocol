@@ -58,9 +58,8 @@ export const metadata = {
   },
   icons: {
     icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
       { url: '/favicon.ico', sizes: '32x32' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
     ],
     apple: '/apple-touch-icon.png',
   },
@@ -118,11 +117,10 @@ const navbar = (
     logo={
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <img
-          src="/logo.png"
+          src="/logo.svg"
           alt="APP"
           width={28}
           height={28}
-          style={{ borderRadius: '4px' }}
         />
         <span style={{ fontWeight: 800, fontSize: '1.1rem' }}>
           AI Provenance Protocol
