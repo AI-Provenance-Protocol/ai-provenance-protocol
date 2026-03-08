@@ -72,3 +72,6 @@ pnpm-debug.log*
 tmp/
 temp/
 *.tmp
+
+# Cursor IDE configuration files
+.cursor/
