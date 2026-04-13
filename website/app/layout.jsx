@@ -65,9 +65,6 @@ export const metadata = {
     ],
     apple: '/apple-touch-icon.png',
   },
-  alternates: {
-    canonical: BASE_URL,
-  },
   other: {
     'google-site-verification': '',
   },
@@ -91,28 +88,6 @@ const jsonLd = {
   },
 }
 
-const specJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'TechArticle',
-  name: 'AI Provenance Protocol Specification v1.0',
-  url: `${BASE_URL}/specification`,
-  description:
-    'The technical specification for the AI Provenance Protocol, an open standard for AI-generated content provenance.',
-  author: {
-    '@type': 'Organization',
-    name: 'AI Provenance Protocol Contributors',
-    url: BASE_URL,
-  },
-  license: 'https://creativecommons.org/licenses/by/4.0/',
-  version: '1.0.0-draft',
-  datePublished: '2026-03-06',
-  inLanguage: 'en',
-  about: {
-    '@type': 'Thing',
-    name: 'AI Content Provenance',
-    description: 'Tracking and verifying the origin of AI-generated content',
-  },
-}
 
 const navbar = (
   <Navbar
@@ -148,10 +123,6 @@ export default async function RootLayout({ children }) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(specJsonLd) }}
         />
       </Head>
       <body>
