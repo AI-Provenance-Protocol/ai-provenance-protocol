@@ -44,19 +44,19 @@ export const metadata = {
       'The open standard for AI-generated content provenance — machine-readable, verifiable, regulation-ready.',
     images: [
       {
-        url: '/icon-512.png',
-        width: 512,
-        height: 512,
-        alt: 'AI Provenance Protocol logo',
+        url: '/og-hero.png',
+        width: 1024,
+        height: 537,
+        alt: 'AI Provenance Protocol — verified AI content provenance network',
       },
     ],
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: 'AI Provenance Protocol (APP)',
     description:
       'The open standard for AI-generated content provenance — machine-readable, verifiable, regulation-ready.',
-    images: ['/icon-512.png'],
+    images: ['/og-hero.png'],
   },
   icons: {
     icon: [

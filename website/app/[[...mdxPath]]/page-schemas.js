@@ -1,9 +1,17 @@
 const BASE_URL = 'https://aiprovenanceprotocol.io'
 
+const HERO_IMAGE = {
+  '@type': 'ImageObject',
+  url: `${BASE_URL}/og-hero.png`,
+  width: 1024,
+  height: 537,
+}
+
 const TECH_ARTICLE_DEFAULTS = {
   '@context': 'https://schema.org',
   '@type': 'TechArticle',
-  dateModified: '2026-04-13',
+  dateModified: '2026-04-18',
+  image: HERO_IMAGE,
   author: { '@type': 'Organization', name: 'AI Provenance Protocol Contributors' },
   publisher: { '@id': `${BASE_URL}/#organization` },
   about: { '@type': 'Thing', name: 'AI Provenance Protocol Specification' },
@@ -81,12 +89,7 @@ export const PAGE_SCHEMAS = {
       url: BASE_URL,
     },
     publisher: { '@id': `${BASE_URL}/#organization` },
-    image: {
-      '@type': 'ImageObject',
-      url: `${BASE_URL}/icon-512.png`,
-      width: 512,
-      height: 512,
-    },
+    image: HERO_IMAGE,
     about: { '@type': 'Thing', name: 'AI Provenance Protocol' },
     mainEntityOfPage: { '@type': 'WebPage', '@id': `${BASE_URL}/docs/getting-started` },
   },
@@ -147,19 +150,68 @@ export const PAGE_SCHEMAS = {
     url: `${BASE_URL}/specification/security`,
   },
 
-  'specification/json-schema': {
-    ...TECH_ARTICLE_DEFAULTS,
-    headline: 'JSON Schema Reference — APP Specification',
-    description:
-      'The APP metadata JSON Schema (Draft 2020-12) for automated validation of AI provenance records. Schema location, usage examples with AJV, and the full field definitions for machine-readable validation.',
-    url: `${BASE_URL}/specification/json-schema`,
-  },
-
   'specification/versioning': {
     ...TECH_ARTICLE_DEFAULTS,
     headline: 'Versioning — APP Specification',
     description:
       'How the AI Provenance Protocol uses Semantic Versioning for the app_version field — compatibility guarantees, breaking vs non-breaking changes, and how consumers should handle version differences.',
     url: `${BASE_URL}/specification/versioning`,
+  },
+
+  'specification/json-schema': {
+    ...TECH_ARTICLE_DEFAULTS,
+    headline: 'JSON Schema Reference — APP Specification',
+    description:
+      'The APP metadata JSON Schema (Draft 2020-12) for automated validation of AI provenance records. Schema location, usage examples with AJV, and the full field definitions for machine-readable validation.',
+    url: `${BASE_URL}/specification/json-schema`,
+    // Dataset schema for the downloadable JSON Schema file
+    subjectOf: {
+      '@context': 'https://schema.org',
+      '@type': 'Dataset',
+      name: 'APP Metadata JSON Schema v1.0',
+      description:
+        'JSON Schema (Draft 2020-12) defining the AI Provenance Protocol metadata object — required and optional fields for automated validation of AI provenance records.',
+      url: `${BASE_URL}/specification/json-schema`,
+      distribution: [
+        {
+          '@type': 'DataDownload',
+          encodingFormat: 'application/json',
+          contentUrl: `${BASE_URL}/schema/v1.0/app-metadata.schema.json`,
+        },
+      ],
+      creator: { '@id': `${BASE_URL}/#organization` },
+      license: 'https://creativecommons.org/licenses/by/4.0/',
+      version: '1.0.0',
+      keywords: [
+        'JSON Schema',
+        'AI provenance',
+        'validation',
+        'structured data',
+        'EU AI Act',
+        'metadata',
+        'open standard',
+      ],
+    },
+  },
+
+  'docs/sdk': {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'AI Provenance Protocol SDK',
+    description:
+      'Official TypeScript and Python SDKs for implementing the AI Provenance Protocol — convenience wrappers for creating, embedding, extracting, and validating APP metadata in your applications.',
+    url: `${BASE_URL}/docs/sdk`,
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'Any',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+    },
+    creator: { '@id': `${BASE_URL}/#organization` },
+    license: 'https://www.apache.org/licenses/LICENSE-2.0',
+    codeRepository:
+      'https://github.com/AI-Provenance-Protocol/ai-provenance-protocol',
+    programmingLanguage: ['TypeScript', 'Python'],
   },
 }
