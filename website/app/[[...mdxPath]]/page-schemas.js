@@ -68,48 +68,27 @@ export const PAGE_SCHEMAS = {
 
   'docs/getting-started': {
     '@context': 'https://schema.org',
-    '@type': 'HowTo',
-    name: 'Getting Started with the AI Provenance Protocol',
+    '@type': 'Article',
+    headline: 'Getting Started with the AI Provenance Protocol',
     description:
       'A step-by-step guide to implementing the AI Provenance Protocol (APP) in your application — from generating metadata to embedding, hashing, and exposing a verification endpoint.',
-    step: [
-      {
-        '@type': 'HowToStep',
-        position: 1,
-        name: 'Generate APP metadata',
-        text: 'Every time your application generates content using an AI model, create an APP metadata object with five required fields: app_version, ai_generated, generator (platform and model), generated_at (ISO 8601 timestamp), and generation_id (UUID v4).',
-      },
-      {
-        '@type': 'HowToStep',
-        position: 2,
-        name: 'Choose an embedding mode',
-        text: 'Embed APP metadata using one of three modes: inline JSON by adding an _ai_provenance key to your JSON response, HTTP response headers using X-APP-* headers, or linked metadata via a Link header with rel=ai-provenance.',
-      },
-      {
-        '@type': 'HowToStep',
-        position: 3,
-        name: 'Record human review',
-        text: 'When a human reviews AI-generated content, update the metadata with review.human_reviewed set to true, along with reviewer_role, reviewed_at, and review_type. This is critical for EU AI Act Article 50(4) disclosure exemptions.',
-      },
-      {
-        '@type': 'HowToStep',
-        position: 4,
-        name: 'Add a content hash',
-        text: 'Compute a SHA-256 hash of the generated content for integrity verification and include it as the content_hash field in the APP metadata. For JSON content, hash the canonical representation with keys sorted and the _ai_provenance key excluded.',
-      },
-      {
-        '@type': 'HowToStep',
-        position: 5,
-        name: 'Implement a verification endpoint',
-        text: 'Expose a public REST endpoint at GET /v1/verify/{generation_id} where third parties can verify generation claims without authentication. Return found, ai_generated, generator, and generated_at fields.',
-      },
-      {
-        '@type': 'HowToStep',
-        position: 6,
-        name: 'Validate your metadata',
-        text: 'Validate your APP metadata against the JSON Schema at https://aiprovenanceprotocol.io/schema/v1.0/app-metadata.schema.json to ensure conformance with the specification.',
-      },
-    ],
+    url: `${BASE_URL}/docs/getting-started`,
+    datePublished: '2026-03-06',
+    dateModified: '2026-04-13',
+    author: {
+      '@type': 'Organization',
+      name: 'AI Provenance Protocol Contributors',
+      url: BASE_URL,
+    },
+    publisher: { '@id': `${BASE_URL}/#organization` },
+    image: {
+      '@type': 'ImageObject',
+      url: `${BASE_URL}/icon-512.png`,
+      width: 512,
+      height: 512,
+    },
+    about: { '@type': 'Thing', name: 'AI Provenance Protocol' },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `${BASE_URL}/docs/getting-started` },
   },
 
   specification: {
