@@ -65,9 +65,6 @@ export const metadata = {
     ],
     apple: '/apple-touch-icon.png',
   },
-  other: {
-    'google-site-verification': '',
-  },
 }
 
 const jsonLd = {
@@ -78,14 +75,6 @@ const jsonLd = {
   url: BASE_URL,
   description:
     'An open standard for recording, embedding, and verifying the provenance of AI-generated content.',
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: {
-      '@type': 'EntryPoint',
-      urlTemplate: `${BASE_URL}/docs?q={search_term_string}`,
-    },
-    'query-input': 'required name=search_term_string',
-  },
 }
 
 
