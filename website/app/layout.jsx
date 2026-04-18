@@ -69,12 +69,36 @@ export const metadata = {
 
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'AI Provenance Protocol',
-  alternateName: 'APP',
-  url: BASE_URL,
-  description:
-    'An open standard for recording, embedding, and verifying the provenance of AI-generated content.',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${BASE_URL}/#website`,
+      name: 'AI Provenance Protocol',
+      alternateName: 'APP',
+      url: BASE_URL,
+      description:
+        'An open standard for recording, embedding, and verifying the provenance of AI-generated content.',
+      publisher: { '@id': `${BASE_URL}/#organization` },
+    },
+    {
+      '@type': 'Organization',
+      '@id': `${BASE_URL}/#organization`,
+      name: 'AI Provenance Protocol',
+      alternateName: 'APP',
+      url: BASE_URL,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${BASE_URL}/icon-512.png`,
+        width: 512,
+        height: 512,
+      },
+      description:
+        'An open standard for recording, embedding, and verifying the provenance of AI-generated content.',
+      sameAs: [
+        'https://github.com/AI-Provenance-Protocol/ai-provenance-protocol',
+      ],
+    },
+  ],
 }
 
 
