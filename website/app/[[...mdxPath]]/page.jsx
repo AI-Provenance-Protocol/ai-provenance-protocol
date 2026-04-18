@@ -1,5 +1,6 @@
 import { generateStaticParamsFor, importPage } from 'nextra/pages'
 import { useMDXComponents as getMDXComponents } from '../../mdx-components'
+import { PAGE_SCHEMAS } from './page-schemas'
 
 export const generateStaticParams = generateStaticParamsFor('mdxPath')
 
@@ -66,19 +67,27 @@ export async function generateMetadata(props) {
 
 const Wrapper = getMDXComponents().wrapper
 
+function SchemaScript({ data }) {
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
+  )
+}
+
 export default async function Page(props) {
   const params = await props.params
   const { default: MDXContent, toc, metadata, sourceCode } =
     await importPage(params.mdxPath)
-  const breadcrumbLd = buildBreadcrumbLd(params.mdxPath)
+  const pathSegments = params.mdxPath || []
+  const pathKey = pathSegments.join('/')
+  const breadcrumbLd = buildBreadcrumbLd(pathSegments)
+  const pageSchema = PAGE_SCHEMAS[pathKey]
   return (
     <Wrapper toc={toc} metadata={metadata} sourceCode={sourceCode}>
-      {breadcrumbLd && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
-        />
-      )}
+      {breadcrumbLd && <SchemaScript data={breadcrumbLd} />}
+      {pageSchema && <SchemaScript data={pageSchema} />}
       <MDXContent {...props} params={params} />
     </Wrapper>
   )

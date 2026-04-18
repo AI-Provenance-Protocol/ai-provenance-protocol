@@ -132,13 +132,12 @@ const footer = (
 export default async function RootLayout({ children }) {
   return (
     <html lang="en" dir="ltr" suppressHydrationWarning>
-      <Head>
+      <Head />
+      <body>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-      </Head>
-      <body>
         <Layout
           navbar={navbar}
           pageMap={await getPageMap()}
