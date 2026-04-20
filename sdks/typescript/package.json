@@ -1,0 +1,51 @@
+{
+  "name": "@ai-provenance-protocol/sdk",
+  "version": "1.0.0",
+  "description": "Official TypeScript/JavaScript SDK for the AI Provenance Protocol",
+  "keywords": [
+    "ai-provenance",
+    "ai-provenance-protocol",
+    "app",
+    "eu-ai-act",
+    "provenance",
+    "ai-transparency"
+  ],
+  "homepage": "https://aiprovenanceprotocol.io/docs/sdk",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AI-Provenance-Protocol/ai-provenance-protocol.git",
+    "directory": "sdks/typescript"
+  },
+  "license": "Apache-2.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

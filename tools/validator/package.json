@@ -1,0 +1,46 @@
+{
+  "name": "app-validator",
+  "version": "1.0.0",
+  "description": "CLI validator for AI Provenance Protocol metadata",
+  "keywords": [
+    "ai-provenance",
+    "ai-provenance-protocol",
+    "app",
+    "validator",
+    "eu-ai-act",
+    "cli"
+  ],
+  "homepage": "https://aiprovenanceprotocol.io/docs/sdk",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AI-Provenance-Protocol/ai-provenance-protocol.git",
+    "directory": "tools/validator"
+  },
+  "license": "Apache-2.0",
+  "type": "commonjs",
+  "bin": {
+    "app-validator": "dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "commander": "^12.1.0",
+    "picocolors": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
