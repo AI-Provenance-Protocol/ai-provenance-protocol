@@ -15,7 +15,7 @@ const SEGMENT_LABELS = {
   'verification-protocol': 'Verification Protocol',
   'mcp-integration': 'MCP Integration',
   'regulatory-mapping': 'Regulatory Mapping',
-  sdk: 'SDK',
+  sdk: 'SDKs & CLI',
   'core-schema': 'Core Schema',
   'content-hashing': 'Content Hashing',
   'json-schema': 'JSON Schema Reference',

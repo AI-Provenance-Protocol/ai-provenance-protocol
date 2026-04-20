@@ -83,6 +83,29 @@ APP complements existing standards — it doesn't replace them.
 
 ---
 
+## In production
+
+APP is already in production use. [merchi.ai](https://merchi.ai) is the first conformant implementation, embedding APP metadata in all AI-generated content and exposing a public verification endpoint.
+
+You can verify a live generation right now:
+
+```bash
+curl https://app.merchi.ai/api/functions/v1/verify/a6986899-bb06-461b-bbf7-c689cad09cbd
+```
+
+```json
+{
+  "found": true,
+  "app_version": "1.0.0",
+  "ai_generated": true,
+  "generator": { "model": "google/gemini-3-flash-preview-20251217" },
+  "generated_at": "2026-04-18T14:40:10.494Z",
+  "review": { "human_reviewed": false, "review_type": "pending" }
+}
+```
+
+---
+
 ## Open and free
 
 - **Specification**: CC BY 4.0

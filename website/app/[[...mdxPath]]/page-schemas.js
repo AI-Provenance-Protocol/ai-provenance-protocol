@@ -197,12 +197,13 @@ export const PAGE_SCHEMAS = {
   'docs/sdk': {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    name: 'AI Provenance Protocol SDK',
+    name: 'AI Provenance Protocol SDK & CLI',
     description:
-      'Official TypeScript and Python SDKs for implementing the AI Provenance Protocol — convenience wrappers for creating, embedding, extracting, and validating APP metadata in your applications.',
+      'Official TypeScript SDK and validator CLI for the AI Provenance Protocol — create, embed, validate, and verify AI provenance metadata. Available on npm.',
     url: `${BASE_URL}/docs/sdk`,
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
+    downloadUrl: 'https://www.npmjs.com/package/@ai-provenance-protocol/sdk',
     offers: {
       '@type': 'Offer',
       price: '0',
@@ -212,6 +213,7 @@ export const PAGE_SCHEMAS = {
     license: 'https://www.apache.org/licenses/LICENSE-2.0',
     codeRepository:
       'https://github.com/AI-Provenance-Protocol/ai-provenance-protocol',
-    programmingLanguage: ['TypeScript', 'Python'],
+    programmingLanguage: ['TypeScript', 'JavaScript'],
+    releaseNotes: 'v1.0.0 — initial release with full TypeScript SDK and app-validator CLI',
   },
 }

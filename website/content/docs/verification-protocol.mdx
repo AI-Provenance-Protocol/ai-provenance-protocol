@@ -113,6 +113,34 @@ Content-Type: application/json
 - **No content exposure** — verification returns provenance metadata only
 - **UUID v4 entropy** (122 bits) makes brute-force ID enumeration impractical
 
+## Live example
+
+[merchi.ai](https://merchi.ai) operates a conformant public verification endpoint. You can test a real generation:
+
+```bash
+curl https://app.merchi.ai/api/functions/v1/verify/a6986899-bb06-461b-bbf7-c689cad09cbd
+```
+
+```json
+{
+  "found": true,
+  "app_version": "1.0.0",
+  "ai_generated": true,
+  "generator": { "model": "google/gemini-3-flash-preview-20251217" },
+  "generated_at": "2026-04-18T14:40:10.494Z",
+  "review": { "human_reviewed": false, "review_type": "pending" }
+}
+```
+
+Or use the CLI:
+
+```bash
+npx app-validator verify a6986899-bb06-461b-bbf7-c689cad09cbd \
+  https://app.merchi.ai/api/functions/v1/verify
+```
+
+---
+
 ## EU AI Act compliance
 
 The verification protocol satisfies the Article 50(2) requirement for detection mechanisms that are free of charge and available through publicly accessible interfaces.
