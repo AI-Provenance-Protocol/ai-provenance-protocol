@@ -1,0 +1,53 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ai-provenance-protocol"
+version = "1.0.0"
+description = "Official Python SDK for the AI Provenance Protocol"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+authors = [
+  { name = "AI Provenance Protocol Contributors" }
+]
+keywords = [
+  "ai-provenance",
+  "ai-provenance-protocol",
+  "eu-ai-act",
+  "provenance",
+  "ai-transparency",
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Software Development :: Libraries",
+  "Topic :: Internet :: WWW/HTTP",
+]
+requires-python = ">=3.9"
+dependencies = [
+  "jsonschema>=4.18.0",
+  "httpx>=0.27.0",
+]
+
+[project.urls]
+Homepage = "https://aiprovenanceprotocol.io/docs/sdk"
+Documentation = "https://aiprovenanceprotocol.io/docs/sdk"
+Repository = "https://github.com/AI-Provenance-Protocol/ai-provenance-protocol"
+"Bug Tracker" = "https://github.com/AI-Provenance-Protocol/ai-provenance-protocol/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ai_provenance_protocol"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "src/",
+  "README.md",
+  "pyproject.toml",
+]

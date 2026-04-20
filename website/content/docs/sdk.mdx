@@ -1,6 +1,6 @@
 ---
 title: SDKs & CLI
-description: Official TypeScript SDK and validator CLI for implementing the AI Provenance Protocol — install from npm, generate metadata, embed, validate, and verify in minutes.
+description: Official TypeScript and Python SDKs plus validator CLI for implementing the AI Provenance Protocol — install from npm or PyPI, generate metadata, embed, validate, and verify in minutes.
 ---
 
 # SDKs & CLI
@@ -162,6 +162,136 @@ import type { AppMetadata, Generator, Review, ValidationResult } from '@ai-prove
 
 ---
 
+## Python SDK
+
+### Installation
+
+```bash
+pip install ai-provenance-protocol
+```
+
+Requires Python 3.9+. Depends on [`jsonschema`](https://pypi.org/project/jsonschema/) (Draft 2020-12 validation) and [`httpx`](https://pypi.org/project/httpx/) (sync + async HTTP).
+
+### Quick start
+
+```python
+from ai_provenance_protocol import APP
+
+# Create metadata after your AI call
+metadata = APP.create(
+    generator={"platform": "my-platform", "model": "gpt-4o"},
+    verification_uri="https://api.my-platform.com/verify",
+)
+
+# Embed in your API response
+response = APP.embed({"reply": "Hello, world!"}, metadata)
+# {"reply": "Hello, world!", "_ai_provenance": {"app_version": "1.0.0", ...}}
+```
+
+### API reference
+
+#### `APP.create(**kwargs)`
+
+Creates a new APP metadata record. Automatically sets `app_version`, `generated_at` (UTC), and `generation_id` (UUID v4).
+
+```python
+metadata = APP.create(
+    generator={"platform": "my-platform", "model": "gpt-4o"},
+    verification_uri="https://api.my-platform.com/verify",
+    inputs={"type": "text", "description": "User prompt"},
+    # optional
+    generation_id="550e8400-...",
+    parent_generation_id="...",
+    extensions={"io.acme": {"tenant_id": "t_123"}},
+)
+```
+
+#### `APP.embed(content, metadata)` / `APP.extract(content)`
+
+```python
+output = APP.embed({"answer": "42"}, metadata)
+
+content, meta = APP.extract(output)
+# content == {"answer": "42"}
+# meta    == {...}  or  None if not present
+```
+
+#### `APP.validate(metadata)`
+
+Validates against the APP v1.0 JSON Schema (bundled — no network call).
+
+```python
+result = APP.validate(metadata)
+# {"valid": True, "errors": []}
+
+if not result["valid"]:
+    for err in result["errors"]:
+        print(err)
+```
+
+#### `APP.review(metadata, **kwargs)`
+
+Records a human review. Returns a new dict (immutable pattern).
+
+```python
+approved = APP.review(
+    metadata,
+    human_reviewed=True,
+    reviewer_role="editor",
+    review_type="approved_without_changes",
+)
+```
+
+#### `APP.hash_content(content)` / `APP.attach_hash(metadata, content)`
+
+```python
+h = APP.hash_content({"answer": "42"})
+# {"algorithm": "sha256", "value": "<hex>"}
+
+metadata_with_hash = APP.attach_hash(metadata, content)
+```
+
+#### `APP.verify_sync(generation_id, verification_uri)` / `APP.verify(...)`
+
+Level 1 verification — look up a generation ID.
+
+```python
+# Sync
+result = APP.verify_sync(
+    metadata["generation_id"],
+    metadata["verification_uri"],
+)
+# {"found": True, "metadata": {...}}
+
+# Async
+result = await APP.verify(
+    metadata["generation_id"],
+    metadata["verification_uri"],
+)
+```
+
+#### `APP.match_sync(content_hash, verification_uri)` / `APP.match(...)`
+
+Level 2 verification — match by content hash.
+
+```python
+h = APP.hash_content(content)
+result = APP.match_sync(h["value"], metadata["verification_uri"])
+# {"match": True, "generation_id": "..."}
+```
+
+### Direct imports and types
+
+All functions and `TypedDict` types are importable directly:
+
+```python
+from ai_provenance_protocol import create, embed, extract, validate, review
+from ai_provenance_protocol import hash_content, attach_hash, verify_sync
+from ai_provenance_protocol import AppMetadata, Generator, ValidationResult
+```
+
+---
+
 ## Validator CLI
 
 A command-line tool for validating APP metadata and verifying generations — no code required.
@@ -252,7 +382,7 @@ Output: `sha256:e3b0c44298fc1c149afbf4c8996fb924...`
 |---------|----------|----------|--------|
 | [`@ai-provenance-protocol/sdk`](https://www.npmjs.com/package/@ai-provenance-protocol/sdk) | TypeScript / JavaScript | npm | Available |
 | [`app-validator`](https://www.npmjs.com/package/app-validator) | CLI | npm | Available |
-| `ai-provenance-protocol` | Python | PyPI | Coming soon |
+| [`ai-provenance-protocol`](https://pypi.org/project/ai-provenance-protocol/) | Python | PyPI | Available |
 
 ---
 
